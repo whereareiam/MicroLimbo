@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class MotdCustomization {
 	private List<String> motd = List.of(
-			"<dark_purple><bold> MicroLimbo<reset>",
+			"<dark_purple><bold> MicroLimbo<bold:false>",
 			"<white><italic> Straight from the future!"
 	);
 	private String version = "MicroLimbo";
