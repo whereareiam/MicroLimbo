@@ -171,4 +171,9 @@ public final class LimboServer implements com.aerittopia.microlimbo.api.LimboSer
 				.findFirst()
 				.orElse(null);
 	}
+
+	@Override
+	public int getMaxPlayers() {
+		return settingsConfig.getConnection().getMaxPlayers();
+	}
 }

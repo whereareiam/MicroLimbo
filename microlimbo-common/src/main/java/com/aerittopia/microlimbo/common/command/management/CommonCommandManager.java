@@ -43,4 +43,12 @@ public final class CommonCommandManager extends Thread implements CommandManager
 			commands.put(alias.toLowerCase(), cmd);
 		}
 	}
+
+	@Override
+	public void dispatchCommand(String command) {
+		Command handler = getCommand(command);
+		if (handler == null) return;
+
+		handler.execute();
+	}
 }
