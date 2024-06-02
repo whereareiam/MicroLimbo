@@ -4,4 +4,4 @@ before_install:
   - sdk use java 21-librca
   - sdk install maven
 install:
-  - mvn -T 1C -pl microlimbo-common-api install -DskipTests
+  - mvn -T 1C -pl microlimbo-common-api install -DskipTests -Drevision=1.0.0
