@@ -21,11 +21,14 @@ import com.aerittopia.microlimbo.api.connection.Player;
 import com.aerittopia.microlimbo.api.registry.Version;
 import com.aerittopia.microlimbo.common.connection.client.ClientConnection;
 import com.aerittopia.microlimbo.common.protocol.packet.login.PacketDisconnect;
+import com.aerittopia.microlimbo.common.protocol.packet.play.*;
 import com.aerittopia.microlimbo.common.registry.State;
+import com.aerittopia.microlimbo.common.util.NBTMessageUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -65,5 +68,45 @@ public class LimboPlayer implements Player {
 		if (connection.getChannel().isActive() && state == State.LOGIN) {
 			getClientConnection().sendPacket(new PacketDisconnect(component), true);
 		}
+	}
+
+	@Override
+	public void sendMessage(Component component) {
+		PacketChatMessage chatMessage = new PacketChatMessage();
+		chatMessage.setMessage(NBTMessageUtil.create(component));
+		chatMessage.setPosition(PacketChatMessage.PositionLegacy.SYSTEM_MESSAGE);
+		chatMessage.setSender(UUID.randomUUID());
+
+		getClientConnection().sendPacket(chatMessage);
+	}
+
+	@Override
+	public void sendTitle(Title title) {
+		PacketTitleSetTitle packetTitle = new PacketTitleSetTitle();
+		PacketTitleSetSubTitle packetSubtitle = new PacketTitleSetSubTitle();
+		PacketTitleTimes packetTimes = new PacketTitleTimes();
+
+		packetTitle.setTitle(NBTMessageUtil.create(title.title()));
+		packetSubtitle.setSubtitle(NBTMessageUtil.create(title.subtitle()));
+
+		Title.Times times = title.times();
+		if (times.fadeIn() != null && times.stay() != null && times.fadeOut() != null) {
+			packetTimes.setFadeIn(title.times().fadeIn().getNano());
+			packetTimes.setStay(title.times().stay().getNano());
+			packetTimes.setFadeOut(title.times().fadeOut().getNano());
+		}
+
+		getClientConnection().sendPacket(packetTitle);
+		getClientConnection().sendPacket(packetSubtitle);
+		getClientConnection().sendPacket(packetTimes);
+	}
+
+	@Override
+	public void sendPluginMessage(String channel, String message) {
+		PacketPluginMessage pluginMessage = new PacketPluginMessage();
+		pluginMessage.setChannel(channel);
+		pluginMessage.setMessage(message);
+
+		getClientConnection().sendPacket(pluginMessage);
 	}
 }

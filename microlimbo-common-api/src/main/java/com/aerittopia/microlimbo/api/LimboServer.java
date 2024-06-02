@@ -14,4 +14,6 @@ public interface LimboServer {
 	Player getPlayer(String name);
 
 	Player getPlayer(UUID uniqueId);
+
+	int getMaxPlayers();
 }

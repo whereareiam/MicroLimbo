@@ -10,4 +10,6 @@ public interface CommandManager {
 	Map<String, Command> getCommands();
 
 	Command getCommand(String name);
+
+	void dispatchCommand(String command);
 }

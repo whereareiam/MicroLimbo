@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class TitleCustomization {
 	private boolean enabled = false;
-	private String title = "<dark_purple><bold>MicroLimbo<reset>";
+	private String title = "<dark_purple><bold>MicroLimbo";
 	private String subtitle = "<dark_gray>Straight from the future!";
 
 	private int fadeIn = 20;
