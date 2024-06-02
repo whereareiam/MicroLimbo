@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.aerittopia</groupId>
+        <artifactId>microlimbo-platform</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>velocity</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.velocitypowered</groupId>
+            <artifactId>velocity-api</artifactId>
+            <version>${velocity.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>${mojo.wagon.version}</version>
+                        <executions>
+                            <execution>
+                                <id>upload-artifacts</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>upload-single</goal>
+                                </goals>
+                                <configuration>
+                                    <fromFile>target/${project.parent.parent.artifactId}.jar</fromFile>
+                                    <url>
+                                        sftp://${testServerHostname}:${testServerPort}/home/aeritt/server/local/templates/proxy/velocity/plugins/
+                                    </url>
+                                    <serverId>sftp-server</serverId>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${project.parent.parent.artifactId}-VELOCITY-${project.parent.parent.version}</finalName>
+    </build>
+</project>

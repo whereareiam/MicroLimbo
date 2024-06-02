@@ -1,0 +1,65 @@
+name: Development build
+
+env:
+  projectVersion: '1.0.0'
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    outputs:
+      projectName: ${{ steps.project_details.outputs.project_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract project details
+        id: project_details
+        run: |
+          echo "PROJECT_NAME=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Build Module
+        run: |
+          mvn -T 1C -Drevision=${{ env.projectVersion }} -B package --file pom.xml
+
+      - name: Upload artifact for API
+        env:
+          projectName: ${{ needs.setup.outputs.projectName }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.projectName }}-API-${{ env.projectVersion }}-b${{ github.run_number }}
+          path: microlimbo-common-api/target/*.jar
+
+      - name: Upload artifact for Standalone
+        env:
+          projectName: ${{ needs.setup.outputs.projectName }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.projectName }}-STANDALONE-${{ env.projectVersion }}-b${{ github.run_number }}
+          path: microlimbo-platform/standalone/target/*.jar
+
+      - name: Upload artifact for Velocity
+        env:
+          projectName: ${{ needs.setup.outputs.projectName }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.projectName }}-VELOCITY-${{ env.projectVersion }}-b${{ github.run_number }}
+          path: microlimbo-platform/velocity/target/*.jar

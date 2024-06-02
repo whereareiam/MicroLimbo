@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aerittopia</groupId>
+    <artifactId>MicroLimbo</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>microlimbo-common</module>
+        <module>microlimbo-common-api</module>
+        <module>microlimbo-platform</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+        </profile>
+    </profiles>
+
+    <properties>
+        <!-- Project config -->
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Maven version -->
+        <maven.jar.version>3.2.0</maven.jar.version>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
+        <maven.shade.version>3.5.3</maven.shade.version>
+        <maven.resources.version>3.3.1</maven.resources.version>
+        <maven.javadoc.version>3.6.3</maven.javadoc.version>
+        <mojo.wagon.version>2.0.2</mojo.wagon.version>
+
+        <!-- Dependencies -->
+        <guice.version>7.0.0</guice.version>
+        <gson.version>2.11.0</gson.version>
+        <lombok.version>1.18.32</lombok.version>
+        <logback.version>1.5.6</logback.version>
+        <netty.version>4.1.101.Final</netty.version>
+        <adventure.version>4.14.0</adventure.version>
+
+        <!-- Dependencies: Platform -->
+        <velocity.version>3.3.0-SNAPSHOT</velocity.version>
+
+        <!-- CVEs Override -->
+        <guava.version>33.2.0-jre</guava.version>
+    </properties>
+
+    <repositories>
+        <!-- Velocity -->
+        <repository>
+            <id>velocity</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.version}</version>
+            </plugin>
+        </plugins>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+    </build>
+</project>
