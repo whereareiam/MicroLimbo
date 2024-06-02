@@ -46,7 +46,7 @@
         <velocity.version>3.3.0-SNAPSHOT</velocity.version>
 
         <!-- CVEs Override -->
-        <guava.version>33.2.0-jre</guava.version>
+        <guava.version>33.2.1-jre</guava.version>
     </properties>
 
     <repositories>
