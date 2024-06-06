@@ -1,5 +1,8 @@
 package com.aerittopia.microlimbo.api.plugin;
 
+import lombok.Getter;
+
+@Getter
 public abstract class LimboPlugin {
 	private final PluginConfiguration config;
 
@@ -10,8 +13,4 @@ public abstract class LimboPlugin {
 	public abstract void onEnable();
 
 	public abstract void onDisable();
-
-	public PluginConfiguration getConfig() {
-		return config;
-	}
 }

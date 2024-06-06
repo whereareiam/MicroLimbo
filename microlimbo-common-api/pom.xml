@@ -41,8 +41,8 @@
                 <version>${maven.javadoc.version}</version>
                 <inherited>false</inherited>
                 <configuration>
-                    <doctitle>${project.parent.name}API ${project.parent.version}</doctitle>
-                    <windowtitle>${project.parent.name}API ${project.parent.version}</windowtitle>
+                    <doctitle>${project.parent.name}API ${project.version}</doctitle>
+                    <windowtitle>${project.parent.name}API ${project.version}</windowtitle>
                     <additionalOptions>
                         <additionalOption>-Xdoclint:none</additionalOption>
                     </additionalOptions>
@@ -61,6 +61,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>${project.parent.artifactId}-API-${project.parent.version}</finalName>
+        <finalName>${project.parent.artifactId}-API-${project.version}</finalName>
     </build>
 </project>
