@@ -27,7 +27,6 @@ import com.aerittopia.microlimbo.common.configuration.settings.SettingsConfig;
 import com.aerittopia.microlimbo.common.connection.client.ClientConnection;
 import com.aerittopia.microlimbo.common.connection.player.LimboPlayer;
 import com.aerittopia.microlimbo.common.connection.player.PlayerLoginHandler;
-import com.aerittopia.microlimbo.common.manager.ForwardingManager;
 import com.aerittopia.microlimbo.common.protocol.PacketSnapshot;
 import com.aerittopia.microlimbo.common.protocol.packet.Packet;
 import com.aerittopia.microlimbo.common.protocol.packet.PacketHandshake;
@@ -42,6 +41,7 @@ import com.aerittopia.microlimbo.common.protocol.packet.status.PacketStatusReque
 import com.aerittopia.microlimbo.common.protocol.packet.status.PacketStatusResponse;
 import com.aerittopia.microlimbo.common.registry.ConstantsRegistry;
 import com.aerittopia.microlimbo.common.registry.State;
+import com.aerittopia.microlimbo.common.util.ForwardingUtil;
 import com.aerittopia.microlimbo.common.util.UniqueIdUtil;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -61,7 +61,7 @@ public class PacketHandler {
 	private final EventManager eventManager;
 	private final SettingsConfig settingsConfig;
 
-	private final ForwardingManager forwardingManager;
+	private final ForwardingUtil forwardingUtil;
 	private final PlayerLoginHandler playerLoginHandler;
 
 	private final LoggingHelper loggingHelper;
@@ -69,12 +69,12 @@ public class PacketHandler {
 	private final Map<Class<? extends Packet>, BiConsumer<ClientConnection, Packet>> handlers = new HashMap<>();
 
 	@Inject
-	public PacketHandler(Injector injector, LimboServer server, EventManager eventManager, SettingsConfig settingsConfig, ForwardingManager forwardingManager, PlayerLoginHandler playerLoginHandler, LoggingHelper loggingHelper) {
+	public PacketHandler(Injector injector, LimboServer server, EventManager eventManager, SettingsConfig settingsConfig, ForwardingUtil forwardingUtil, PlayerLoginHandler playerLoginHandler, LoggingHelper loggingHelper) {
 		this.injector = injector;
 		this.server = server;
 		this.eventManager = eventManager;
 		this.settingsConfig = settingsConfig;
-		this.forwardingManager = forwardingManager;
+		this.forwardingUtil = forwardingUtil;
 		this.playerLoginHandler = playerLoginHandler;
 		this.loggingHelper = loggingHelper;
 
@@ -143,7 +143,7 @@ public class PacketHandler {
 				return;
 			}
 
-			if (!forwardingManager.checkVelocityKeyIntegrity(packet.getData())) {
+			if (!forwardingUtil.checkVelocityKeyIntegrity(packet.getData())) {
 				limboPlayer.disconnect(Component.text("Can't verify forwarded limboPlayer info"));
 				return;
 			}
@@ -222,7 +222,7 @@ public class PacketHandler {
 				limboPlayer.disconnect(Component.text("You've enabled Player info forwarding. You need to connect with proxy"));
 			}
 		} else if (settingsConfig.getForwarding().isBungeeGuard()) {
-			if (!forwardingManager.checkBungeeGuardHandshake(limboPlayer, packet.getHost())) {
+			if (!forwardingUtil.checkBungeeGuardHandshake(limboPlayer, packet.getHost())) {
 				limboPlayer.disconnect(Component.text("Invalid BungeeGuard token or packet format"));
 			}
 		}

@@ -71,8 +71,11 @@ public final class LimboServer implements com.aerittopia.microlimbo.api.LimboSer
 		loggingHelper.info("Starting server...");
 
 		ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED);
+
+		// Component initialization
 		injector.getInstance(CommandRegistrar.class).registerCommands();
 		injector.getInstance(CommonCommandManager.class).start();
+		injector.getInstance(CommonPluginManager.class).loadPlugins();
 
 		injector.getInstance(DimensionRegistry.class).load(
 				injector.getInstance(CustomizationConfig.class).getDimension()

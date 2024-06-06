@@ -1,10 +1,9 @@
-package com.aerittopia.microlimbo.common.manager;
+package com.aerittopia.microlimbo.common.util;
 
 import com.aerittopia.microlimbo.common.configuration.settings.InfoForwardingSettings;
 import com.aerittopia.microlimbo.common.configuration.settings.SettingsConfig;
 import com.aerittopia.microlimbo.common.connection.player.LimboPlayer;
 import com.aerittopia.microlimbo.common.protocol.ByteMessage;
-import com.aerittopia.microlimbo.common.util.UniqueIdUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,11 +18,11 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 @Singleton
-public class ForwardingManager {
+public class ForwardingUtil {
 	private final InfoForwardingSettings forwarding;
 
 	@Inject
-	public ForwardingManager(SettingsConfig settingsConfig) {
+	public ForwardingUtil(SettingsConfig settingsConfig) {
 		this.forwarding = settingsConfig.getForwarding();
 	}
 
