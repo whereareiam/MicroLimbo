@@ -1,16 +1,13 @@
 package com.aerittopia.microlimbo.api.plugin;
 
-import lombok.Getter;
+import com.aerittopia.microlimbo.api.LimboServer;
 
-@Getter
-public abstract class LimboPlugin {
-	private final PluginConfiguration config;
+public interface LimboPlugin {
+	PluginConfiguration getConfig();
+	
+	LimboServer getServer();
 
-	protected LimboPlugin(PluginConfiguration config) {
-		this.config = config;
-	}
+	void onEnable();
 
-	public abstract void onEnable();
-
-	public abstract void onDisable();
+	void onDisable();
 }
