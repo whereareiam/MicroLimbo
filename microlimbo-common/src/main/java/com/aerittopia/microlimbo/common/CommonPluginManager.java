@@ -1,9 +1,9 @@
 package com.aerittopia.microlimbo.common;
 
 import com.aerittopia.microlimbo.api.LoggingHelper;
-import com.aerittopia.microlimbo.api.plugin.LimboPlugin;
 import com.aerittopia.microlimbo.api.plugin.PluginConfiguration;
 import com.aerittopia.microlimbo.api.plugin.PluginManager;
+import com.aerittopia.microlimbo.api.plugin.base.Plugin;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -27,7 +27,7 @@ public class CommonPluginManager implements PluginManager {
 	private final LoggingHelper loggingHelper;
 	private final Gson gson = new Gson();
 	@Getter
-	private final List<LimboPlugin> plugins = new ArrayList<>();
+	private final List<Plugin> plugins = new ArrayList<>();
 
 	@Inject
 	public CommonPluginManager(Injector injector, LoggingHelper loggingHelper) {
@@ -60,9 +60,9 @@ public class CommonPluginManager implements PluginManager {
 		if (Files.exists(pluginConfigPath)) {
 			try (FileReader reader = new FileReader(pluginConfigPath.toFile())) {
 				PluginConfiguration config = gson.fromJson(reader, PluginConfiguration.class);
-				Class<? extends LimboPlugin> mainClass = (Class<? extends LimboPlugin>) Class.forName(config.getMain());
+				Class<? extends Plugin> mainClass = (Class<? extends Plugin>) Class.forName(config.getMain());
 
-				LimboPlugin plugin = injector.getInstance(mainClass);
+				Plugin plugin = injector.getInstance(mainClass);
 				plugins.add(plugin);
 			} catch (Exception e) {
 				loggingHelper.severe("Failed to load plugin", e);
@@ -71,7 +71,7 @@ public class CommonPluginManager implements PluginManager {
 	}
 
 	@Override
-	public Optional<LimboPlugin> getPlugin(String name) {
+	public Optional<Plugin> getPlugin(String name) {
 		return plugins.stream().filter(p -> p.getConfig().getName().equals(name)).findFirst();
 	}
 

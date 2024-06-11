@@ -19,6 +19,8 @@ package com.aerittopia.microlimbo.common;
 
 import com.aerittopia.microlimbo.api.LoggingHelper;
 import com.aerittopia.microlimbo.api.connection.Player;
+import com.aerittopia.microlimbo.api.event.EventManager;
+import com.aerittopia.microlimbo.api.plugin.PluginManager;
 import com.aerittopia.microlimbo.common.command.management.CommandRegistrar;
 import com.aerittopia.microlimbo.common.command.management.CommonCommandManager;
 import com.aerittopia.microlimbo.common.configuration.customization.CustomizationConfig;
@@ -143,6 +145,16 @@ public final class LimboServer implements com.aerittopia.microlimbo.api.LimboSer
 		players.remove(player);
 
 		// TODO Event
+	}
+
+	@Override
+	public PluginManager getPluginManager() {
+		return injector.getInstance(PluginManager.class);
+	}
+
+	@Override
+	public EventManager getEventManager() {
+		return injector.getInstance(EventManager.class);
 	}
 
 	@Override

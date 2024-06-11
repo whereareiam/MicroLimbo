@@ -1,13 +1,6 @@
 package com.aerittopia.microlimbo.api.plugin;
 
-import com.aerittopia.microlimbo.api.LimboServer;
+import com.aerittopia.microlimbo.api.plugin.base.PluginBase;
 
-public interface LimboPlugin {
-	PluginConfiguration getConfig();
-	
-	LimboServer getServer();
-
-	void onEnable();
-
-	void onDisable();
+public abstract class LimboPlugin extends PluginBase {
 }
